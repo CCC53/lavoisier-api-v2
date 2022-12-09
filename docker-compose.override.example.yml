@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  lavoisier-db:
+    container_name: lavoisier-db
+    image: postgres:14.3
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=lavoisier-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
