@@ -1,0 +1,96 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Cita {
+  id: ID!
+  motivo: String!
+  fecha: String!
+  horario: String!
+  paciente: Paciente!
+}
+
+type Paciente {
+  id: ID!
+  nombre: String!
+  nacimiento: String!
+  sexo: validGenres!
+  telefono: String!
+  email: String!
+  citas: [Cita!]!
+}
+
+enum validGenres {
+  masculino
+  fenemino
+  otro
+}
+
+type Pago {
+  id: ID!
+  monto: Float!
+  metodoPago: paymentMethod!
+  tipoPago: paymentType!
+  cantidadRecibida: Float!
+  cambio: Float!
+  cita: Cita!
+}
+
+enum paymentMethod {
+  tarjeta
+  efectivo
+}
+
+enum paymentType {
+  primero
+  posterior
+}
+
+type Query {
+  pacientes: [Paciente!]!
+  paciente(id: ID!): Paciente!
+  citas: [Cita!]!
+  pagos: [Pago!]!
+  pago(id: ID!): Pago!
+  pagoByCita(citaId: ID!): Pago!
+}
+
+type Mutation {
+  addPaciente(record: CreatePacienteInput!): Paciente!
+  updatePaciente(record: UpdatePacienteInput!): Paciente!
+  removePaciente(id: ID!): Paciente!
+  addCita(record: CreateCitaInput!): Cita!
+  addPago(record: CreatePagoInput!): Pago!
+}
+
+input CreatePacienteInput {
+  nombre: String!
+  email: String!
+  telefono: String!
+  sexo: validGenres!
+  nacimiento: String!
+}
+
+input UpdatePacienteInput {
+  nombre: String
+  email: String
+  telefono: String
+  sexo: validGenres
+  nacimiento: String
+  id: ID!
+}
+
+input CreateCitaInput {
+  motivo: String!
+  fecha: String!
+  horario: String!
+  pacienteId: ID!
+}
+
+input CreatePagoInput {
+  cantidadRecibida: Float!
+  monto: Float!
+  tipoPago: paymentType!
+  metodoPago: paymentMethod!
+  citaId: ID!
+}
