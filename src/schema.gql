@@ -74,6 +74,19 @@ enum paymentType {
   posterior
 }
 
+type Personal {
+  id: ID!
+  nombre: String!
+  telefono: String!
+  email: String!
+  rol: validRoles!
+}
+
+enum validRoles {
+  recepcionista
+  nutriologo
+}
+
 type HistorialClinico {
   id: ID!
   enfermedadesCardiovasculares: validResponse!
@@ -93,6 +106,11 @@ enum validResponse {
   no
 }
 
+type AuthResponse {
+  token: String!
+  personal: Personal!
+}
+
 type Query {
   pacientes: [Paciente!]!
   paciente(id: ID!): Paciente!
@@ -107,6 +125,8 @@ type Query {
   laboratorial(id: ID!): Laboratorial!
   historialesClinicos: [HistorialClinico!]!
   historialClinico(pacienteId: ID!): HistorialClinico!
+  recepcionistas: [Personal!]!
+  personal(id: ID!): Personal!
 }
 
 type Mutation {
@@ -121,6 +141,9 @@ type Mutation {
   updateAntropometrico(record: UpdateAntropometricoInput!): Antropometria!
   addLaboratorial(record: CreateLaboratorialInput!): Laboratorial!
   updateLaboratorial(record: UpdateLaboratorialInput!): Laboratorial!
+  removePersonal(id: ID!): Personal!
+  signup(record: SignUpInput!): AuthResponse!
+  signin(record: SigninInput!): AuthResponse!
 }
 
 input CreatePacienteInput {
@@ -211,4 +234,17 @@ input UpdateLaboratorialInput {
   ldl: Float
   pacienteId: ID
   id: ID!
+}
+
+input SignUpInput {
+  nombre: String!
+  telefono: String!
+  email: String!
+  password: String!
+  rol: validRoles!
+}
+
+input SigninInput {
+  email: String!
+  password: String!
 }

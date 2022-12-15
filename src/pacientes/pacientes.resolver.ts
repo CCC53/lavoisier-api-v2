@@ -1,10 +1,11 @@
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreatePacienteInput, UpdatePacienteInput } from './dto/inputs/index';
 import { Paciente } from './entities/paciente.entity';
 import { PacientesService } from './pacientes.service';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 
-@Resolver()
+@Resolver() @UseGuards(JwtGuard)
 export class PacientesResolver {
   constructor(private readonly pacientesService: PacientesService) {}
 

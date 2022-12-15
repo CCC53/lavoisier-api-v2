@@ -6,7 +6,7 @@ import { CreatePagoInput } from './dto/inputs/create-pago.input';
 
 @Injectable()
 export class PagosService {
-    private looger = new Logger('PagosService')
+    private logger = new Logger('PagosService')
     
     constructor(@InjectRepository(Pago) private pagoRepository: Repository<Pago>) {}
 
@@ -15,7 +15,7 @@ export class PagosService {
             const pagos = await this.pagoRepository.find();
             return pagos;
         } catch (error) {
-            this.looger.error(error.message);
+            this.logger.error(error.message);
             throw new InternalServerErrorException(error);
         }
     }
@@ -28,7 +28,7 @@ export class PagosService {
             }
             return pago;
         } catch (error) {
-            this.looger.error(error.message);
+            this.logger.error(error.message);
             throw new InternalServerErrorException(error);
         }
     }
@@ -41,7 +41,7 @@ export class PagosService {
             }
             return pago;
         } catch (error) {
-            this.looger.error(error.message);
+            this.logger.error(error.message);
             throw new InternalServerErrorException(error);
         }
     }
@@ -52,7 +52,7 @@ export class PagosService {
             const pago = this.pagoRepository.create({ ...record, cambio });
             return await this.pagoRepository.save(pago);
         } catch (error) {
-            this.looger.error(error.message);
+            this.logger.error(error.message);
             throw new InternalServerErrorException(error);
         }
     }

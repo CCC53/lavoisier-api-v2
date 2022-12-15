@@ -1,10 +1,11 @@
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 import { CitasService } from './citas.service';
 import { Cita } from './entities/cita.entity';
 import { CreateCitaInput, UpdateCitaInput } from './dto/inputs/index';
 
-@Resolver()
+@Resolver() @UseGuards(JwtGuard)
 export class CitasResolver {
   constructor(private readonly citasService: CitasService) {}
 

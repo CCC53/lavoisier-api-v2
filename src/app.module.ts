@@ -10,10 +10,12 @@ import { PagosModule } from './pagos/pagos.module';
 import { AntropometriaModule } from './antropometria/antropometria.module';
 import { LaboratorialModule } from './laboratorial/laboratorial.module';
 import { HistorialClinicoModule } from './historial-clinico/historial-clinico.module';
+import { PersonalModule } from './personal/personal.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql')
@@ -33,7 +35,9 @@ import { HistorialClinicoModule } from './historial-clinico/historial-clinico.mo
     PagosModule,
     AntropometriaModule,
     LaboratorialModule,
-    HistorialClinicoModule
+    HistorialClinicoModule,
+    PersonalModule,
+    AuthModule
   ]
 })
 export class AppModule {}
