@@ -10,6 +10,32 @@ type Cita {
   paciente: Paciente!
 }
 
+type Antropometria {
+  id: ID!
+  fecha: String!
+  peso: Float!
+  talla: Float!
+  imc: Float!
+  cintura: Float!
+  cBrazo: Float!
+  pTriceps: Float!
+  pAbdominal: Float!
+  porcentajeGrasa: String!
+  paciente: Paciente!
+}
+
+type Laboratorial {
+  id: ID!
+  fecha: String!
+  glucosa: Float!
+  insulina: Float!
+  trigliceridos: Float!
+  colesterolTotal: Float!
+  hdl: Float!
+  ldl: Float!
+  paciente: Paciente!
+}
+
 type Paciente {
   id: ID!
   nombre: String!
@@ -18,6 +44,8 @@ type Paciente {
   telefono: String!
   email: String!
   citas: [Cita!]!
+  antropometricos: [Antropometria!]!
+  laboratoriales: [Laboratorial!]!
 }
 
 enum validGenres {
@@ -46,13 +74,39 @@ enum paymentType {
   posterior
 }
 
+type HistorialClinico {
+  id: ID!
+  enfermedadesCardiovasculares: validResponse!
+  enfermedadesPulmonares: validResponse!
+  enfermedadesMetabolicas: validResponse!
+  tabaquismo: validResponse!
+  alcoholismo: validResponse!
+  sedentarismo: validResponse!
+  drogas: validResponse!
+  cafe: validResponse!
+  alimentacion: String
+  paciente: Paciente!
+}
+
+enum validResponse {
+  si
+  no
+}
+
 type Query {
   pacientes: [Paciente!]!
   paciente(id: ID!): Paciente!
   citas: [Cita!]!
+  cita(id: ID!): Cita!
   pagos: [Pago!]!
   pago(id: ID!): Pago!
   pagoByCita(citaId: ID!): Pago!
+  antropometricos(pacienteId: ID!): [Antropometria!]!
+  antropometrico(id: ID!): Antropometria!
+  laboratoriales(pacienteId: ID!): [Laboratorial!]!
+  laboratorial(id: ID!): Laboratorial!
+  historialesClinicos: [HistorialClinico!]!
+  historialClinico(pacienteId: ID!): HistorialClinico!
 }
 
 type Mutation {
@@ -60,7 +114,13 @@ type Mutation {
   updatePaciente(record: UpdatePacienteInput!): Paciente!
   removePaciente(id: ID!): Paciente!
   addCita(record: CreateCitaInput!): Cita!
+  updateCita(record: UpdateCitaInput!): Cita!
+  removeCita(id: ID!): Cita!
   addPago(record: CreatePagoInput!): Pago!
+  addAntropometrico(record: CreateAntropometricoInput!): Antropometria!
+  updateAntropometrico(record: UpdateAntropometricoInput!): Antropometria!
+  addLaboratorial(record: CreateLaboratorialInput!): Laboratorial!
+  updateLaboratorial(record: UpdateLaboratorialInput!): Laboratorial!
 }
 
 input CreatePacienteInput {
@@ -87,10 +147,68 @@ input CreateCitaInput {
   pacienteId: ID!
 }
 
+input UpdateCitaInput {
+  motivo: String
+  fecha: String
+  horario: String
+  pacienteId: ID
+  id: ID!
+}
+
 input CreatePagoInput {
   cantidadRecibida: Float!
   monto: Float!
   tipoPago: paymentType!
   metodoPago: paymentMethod!
   citaId: ID!
+}
+
+input CreateAntropometricoInput {
+  fecha: String!
+  peso: Float!
+  talla: Float!
+  imc: Float!
+  cintura: Float!
+  cBrazo: Float!
+  pTriceps: Float!
+  pAbdominal: Float!
+  porcentajeGrasa: String!
+  pacienteId: ID!
+}
+
+input UpdateAntropometricoInput {
+  fecha: String
+  peso: Float
+  talla: Float
+  imc: Float
+  cintura: Float
+  cBrazo: Float
+  pTriceps: Float
+  pAbdominal: Float
+  porcentajeGrasa: String
+  pacienteId: ID
+  id: ID!
+}
+
+input CreateLaboratorialInput {
+  fecha: String!
+  glucosa: Float!
+  insulina: Float!
+  trigliceridos: Float!
+  colesterolTotal: Float!
+  hdl: Float!
+  ldl: Float!
+  pacienteId: ID!
+}
+
+input UpdateLaboratorialInput {
+  fecha: String
+  glucosa: Float
+  insulina: Float
+  trigliceridos: Float
+  colesterolTotal: Float
+  hdl: Float
+  ldl: Float
+  pacienteId: ID
+  id: ID!
 }

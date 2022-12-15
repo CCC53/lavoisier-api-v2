@@ -7,6 +7,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PacientesModule } from './pacientes/pacientes.module';
 import { CitasModule } from './citas/citas.module';
 import { PagosModule } from './pagos/pagos.module';
+import { AntropometriaModule } from './antropometria/antropometria.module';
+import { LaboratorialModule } from './laboratorial/laboratorial.module';
+import { HistorialClinicoModule } from './historial-clinico/historial-clinico.module';
 
 @Module({
   imports: [
@@ -27,7 +30,10 @@ import { PagosModule } from './pagos/pagos.module';
     }),
     PacientesModule,
     CitasModule,
-    PagosModule
+    PagosModule,
+    AntropometriaModule,
+    LaboratorialModule,
+    HistorialClinicoModule
   ]
 })
 export class AppModule {}
