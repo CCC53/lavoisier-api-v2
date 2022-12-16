@@ -8,7 +8,7 @@ export class CreateHistorialInput {
     enfermedadesCardiovasculares: EnfermedadesResponse;
 
     @Field(() => EnfermedadesResponse) @IsNotEmpty() @IsEnum(EnfermedadesResponse)
-    enfermedadesPulmonares: EnfermedadesResponse
+    enfermedadesPulmonares: EnfermedadesResponse;
 
     @Field(() => EnfermedadesResponse) @IsNotEmpty() @IsEnum(EnfermedadesResponse)
     enfermedadesMetabolicas: EnfermedadesResponse

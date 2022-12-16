@@ -6,6 +6,6 @@ export class SigninInput {
     @Field(() => String) @IsNotEmpty() @IsEmail()
     email: string;
 
-    @Field(() => String) @IsNotEmpty() @IsString() @MaxLength(20) @MinLength(6)
+    @Field(() => String) @IsNotEmpty() @IsString() @MaxLength(10) @MinLength(5)
     password: string;
 }

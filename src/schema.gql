@@ -141,6 +141,9 @@ type Mutation {
   updateAntropometrico(record: UpdateAntropometricoInput!): Antropometria!
   addLaboratorial(record: CreateLaboratorialInput!): Laboratorial!
   updateLaboratorial(record: UpdateLaboratorialInput!): Laboratorial!
+  addHistorial(record: CreateHistorialInput!): HistorialClinico!
+  updateHistorial(record: UpdateHistorialInput!): HistorialClinico!
+  updateProfile(record: UpdateProfileInput!): Personal!
   removePersonal(id: ID!): Personal!
   signup(record: SignUpInput!): AuthResponse!
   signin(record: SigninInput!): AuthResponse!
@@ -234,6 +237,39 @@ input UpdateLaboratorialInput {
   ldl: Float
   pacienteId: ID
   id: ID!
+}
+
+input CreateHistorialInput {
+  enfermedadesCardiovasculares: validResponse!
+  enfermedadesPulmonares: validResponse!
+  enfermedadesMetabolicas: validResponse!
+  tabaquismo: validResponse!
+  alcoholismo: validResponse!
+  sedentarismo: validResponse!
+  drogas: validResponse!
+  cafe: validResponse!
+  pacienteId: ID!
+}
+
+input UpdateHistorialInput {
+  enfermedadesCardiovasculares: validResponse
+  enfermedadesPulmonares: validResponse
+  enfermedadesMetabolicas: validResponse
+  tabaquismo: validResponse
+  alcoholismo: validResponse
+  sedentarismo: validResponse
+  drogas: validResponse
+  cafe: validResponse
+  pacienteId: ID
+  id: ID!
+}
+
+input UpdateProfileInput {
+  nombre: String
+  telefono: String
+  email: String
+  password: String
+  rol: validRoles
 }
 
 input SignUpInput {

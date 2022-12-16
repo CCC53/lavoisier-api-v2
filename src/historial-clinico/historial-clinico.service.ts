@@ -1,7 +1,8 @@
 import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HistorialClinico } from './entities/historial-clinico.entity';
 import { Repository } from 'typeorm';
+import { HistorialClinico } from './entities/historial-clinico.entity';
+import { CreateHistorialInput, UpdateHistorialInput } from './dto/inputs/index';
 
 @Injectable()
 export class HistorialClinicoService {
@@ -44,5 +45,26 @@ export class HistorialClinicoService {
         }
     }
 
-    async create() {}
+    async create(record: CreateHistorialInput) {
+        try {
+            const historial = this.historialRepository.create(record);
+            return await this.historialRepository.save(historial);
+        } catch (error) {
+            this.logger.error(error.message);
+            throw new InternalServerErrorException(error.message);
+        }
+    }
+
+    async update(record: UpdateHistorialInput) {
+        try {
+            const historial = await this.historialRepository.preload(record);
+            if (!historial) {
+                throw new NotFoundException(`No hay historial con id ${record.id}`);
+            }
+            return await this.historialRepository.save(historial);
+        } catch (error) {
+            this.logger.error(error.message);
+            throw new InternalServerErrorException(error.message);
+        }
+    }
 }

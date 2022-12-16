@@ -1,12 +1,14 @@
-import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Query, Resolver } from '@nestjs/graphql';
-import { HistorialClinicoService } from './historial-clinico.service';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { ValidateRole } from '../auth/decorators/validate-role.decorator';
+import { ValidRoles } from '../personal/enum/valid.roles';
+import { Personal } from '../personal/entities/personal.entity';
 import { HistorialClinico } from './entities/historial-clinico.entity';
-import { ValidateRole } from 'src/auth/decorators/validate-role.decorator';
-import { Personal } from 'src/personal/entities/personal.entity';
-import { ValidRoles } from 'src/personal/enum/valid.roles';
+import { HistorialClinicoService } from './historial-clinico.service';
+import { CreateHistorialInput, UpdateHistorialInput } from './dto/inputs/index';
 
-@Resolver()
+@Resolver() @UseGuards(JwtGuard)
 export class HistorialClinicoResolver {
   constructor(private readonly historialClinicoService: HistorialClinicoService) {}
 
@@ -23,5 +25,15 @@ export class HistorialClinicoResolver {
   @Query(() => HistorialClinico, { name: 'historialClinico' })
   findOneByPaciente(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args('pacienteId', { type: () => ID }, ParseUUIDPipe) pacienteId: string) {
     return this.historialClinicoService.findOneByPaciente(pacienteId);
+  }
+
+  @Mutation(() => HistorialClinico, { name: 'addHistorial' })
+  create(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args('record', { type: () => CreateHistorialInput }) record: CreateHistorialInput) {
+    return this.historialClinicoService.create(record);
+  }
+
+  @Mutation(() => HistorialClinico, { name: 'updateHistorial' })
+  update(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args('record', { type: () => UpdateHistorialInput }) record: UpdateHistorialInput) {
+    return this.historialClinicoService.update(record);
   }
 }

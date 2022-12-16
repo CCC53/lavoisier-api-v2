@@ -5,6 +5,7 @@ import { hashSync } from 'bcrypt';
 import { Personal } from './entities/personal.entity';
 import { SignUpInput } from '../auth/dto/inputs/index';
 import { ValidRoles } from './enum/valid.roles';
+import { UpdateProfileInput } from '../auth/dto/inputs/update-profile.input';
  
 @Injectable()
 export class PersonalService {
@@ -27,7 +28,7 @@ export class PersonalService {
 
     async findAllRecepcionistas() {
         try {
-            return await this.personalRepository.find({ where: { rol: ValidRoles.recepcionista } })
+            return await this.personalRepository.find({ where: { rol: ValidRoles.recepcionista } });
         } catch (error) {
             this.logger.error(error.message);
             throw new InternalServerErrorException(error);
@@ -54,6 +55,19 @@ export class PersonalService {
                 throw new NotFoundException('Email or password incorrect');
             }
             return personal;
+        } catch (error) {
+            this.logger.error(error.message);
+            throw new InternalServerErrorException(error);
+        }
+    }
+
+    async updateProfile(record: UpdateProfileInput, id: string) {
+        try {
+            const profile = await this.personalRepository.preload({ ...record, id });
+            if (!profile) {
+                throw new NotFoundException(`No user found with id ${id}`);
+            }
+            return await this.personalRepository.save(profile);
         } catch (error) {
             this.logger.error(error.message);
             throw new InternalServerErrorException(error);
