@@ -4,14 +4,15 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { CitasService } from './citas.service';
 import { Cita } from './entities/cita.entity';
 import { CreateCitaInput, UpdateCitaInput } from './dto/inputs/index';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Resolver() @UseGuards(JwtGuard)
 export class CitasResolver {
   constructor(private readonly citasService: CitasService) {}
 
   @Query(() => [Cita], { name: 'citas' })
-  findAll() {
-    return this.citasService.findAll();
+  findAll(@Args() pagination: PaginationArgs) {
+    return this.citasService.findAll(pagination);
   }
 
   @Query(() => Cita, { name: 'cita' })

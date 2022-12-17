@@ -7,18 +7,24 @@ import { UpdateProfileInput } from '../auth/dto/inputs/update-profile.input';
 import { PersonalService } from './personal.service';
 import { ValidateRole } from '../auth/decorators/validate-role.decorator';
 import { ValidRoles } from './enum/valid.roles';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Resolver() @UseGuards(JwtGuard)
 export class PersonalResolver {
   constructor(private readonly personalService: PersonalService) {}
 
   @Query(() => [Personal], { name: 'recepcionistas' })
-  findAllRecepcionistas(@ValidateRole(ValidRoles.nutriologo) user: Personal) {
-    return this.personalService.findAllRecepcionistas();
+  findAllRecepcionistas(@ValidateRole(ValidRoles.nutriologo) user: Personal, @Args() pagination: PaginationArgs) {
+    return this.personalService.findAllRecepcionistas(pagination);
   }
 
   @Query(() => Personal, { name: 'personal' })
   findOne(@ValidateRole(ValidRoles.nutriologo) user: Personal, @Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
+    return this.personalService.findOne(id);
+  }
+
+  @Query(() => Personal, { name: 'profile' })
+  userProfile(@CurrentUser() { id }: Personal) {
     return this.personalService.findOne(id);
   }
 

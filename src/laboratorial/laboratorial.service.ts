@@ -1,8 +1,10 @@
 import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateLaboratorialInput, UpdateLaboratorialInput } from './dto/inputs/index';
 import { Laboratorial } from './entities/laboratorial.entity';
+import { CreateLaboratorialInput, UpdateLaboratorialInput } from './dto/inputs/index';
+import { getOffset } from '../common/dto/args/pagination.args';
+import { FindAllPaginationArgs } from '../common/dto/args/find-all-pagination.args';
 
 @Injectable()
 export class LaboratorialService {
@@ -10,9 +12,9 @@ export class LaboratorialService {
 
     constructor(@InjectRepository(Laboratorial) private laboratorialRepository: Repository<Laboratorial>) {}
 
-    async findAllByPaciente(pacienteId: string) {
+    async findAllByPaciente({page, pageSize, pacienteId}: FindAllPaginationArgs) {
         try {
-            return await this.laboratorialRepository.find({ where: { pacienteId } });
+            return await this.laboratorialRepository.find({ where: { pacienteId }, take: pageSize, skip: getOffset({page, pageSize}) });
         } catch (error) {
             this.logger.error(error.message);
             throw new InternalServerErrorException(error.message);

@@ -7,14 +7,15 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ValidateRole } from '../auth/decorators/validate-role.decorator';
 import { ValidRoles } from '../personal/enum/valid.roles';
 import { Personal } from '../personal/entities/personal.entity';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Resolver() @UseGuards(JwtGuard)
 export class PagosResolver {
   constructor(private readonly pagosService: PagosService) {}
 
   @Query(() => [Pago], { name: 'pagos' })
-  findAll(@ValidateRole(ValidRoles.recepcionista) personal: Personal) {
-    return this.pagosService.findAll();
+  findAll(@ValidateRole(ValidRoles.recepcionista) personal: Personal, @Args() pagination: PaginationArgs) {
+    return this.pagosService.findAll(pagination);
   }
 
   @Query(() => Pago, { name: 'pago' })

@@ -7,14 +7,15 @@ import { Personal } from '../personal/entities/personal.entity';
 import { HistorialClinico } from './entities/historial-clinico.entity';
 import { HistorialClinicoService } from './historial-clinico.service';
 import { CreateHistorialInput, UpdateHistorialInput } from './dto/inputs/index';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Resolver() @UseGuards(JwtGuard)
 export class HistorialClinicoResolver {
   constructor(private readonly historialClinicoService: HistorialClinicoService) {}
 
   @Query(() => [HistorialClinico], { name: 'historialesClinicos' })
-  findALl(@ValidateRole(ValidRoles.nutriologo) personal: Personal) {
-    return this.historialClinicoService.findAll();
+  findALl(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args() pagination: PaginationArgs) {
+    return this.historialClinicoService.findAll(pagination);
   }
 
   @Query(() => HistorialClinico, { name: 'historialClinico' })

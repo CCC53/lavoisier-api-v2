@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from "@nestjs/graphql";
 import { IsEnum, IsNotEmpty, IsUUID } from "class-validator";
-import { EnfermedadesResponse } from "src/historial-clinico/enum/valid.response";
+import { EnfermedadesResponse } from '../../enum/valid.response';
 
 @InputType()
 export class CreateHistorialInput {

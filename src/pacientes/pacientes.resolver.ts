@@ -4,14 +4,15 @@ import { CreatePacienteInput, UpdatePacienteInput } from './dto/inputs/index';
 import { Paciente } from './entities/paciente.entity';
 import { PacientesService } from './pacientes.service';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Resolver() @UseGuards(JwtGuard)
 export class PacientesResolver {
   constructor(private readonly pacientesService: PacientesService) {}
 
   @Query(() => [Paciente], { name: 'pacientes' })
-  findAll(): Promise<Paciente[]> {
-    return this.pacientesService.findAll();
+  findAll(@Args() pagination: PaginationArgs): Promise<Paciente[]> {
+    return this.pacientesService.findAll(pagination);
   }
 
   @Query(() => Paciente, { name: 'paciente' })

@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Antropometria } from './entities/antropometria.entity';
 import { CreateAntropometricoInput, UpdateAntropometricoInput } from './dto/inputs/index';
+import { getOffset } from '../common/dto/args/pagination.args';
+import { FindAllPaginationArgs } from '../common/dto/args/find-all-pagination.args';
 
 @Injectable()
 export class AntropometriaService {
@@ -10,9 +12,9 @@ export class AntropometriaService {
 
     constructor(@InjectRepository(Antropometria) private antropometriaRepository: Repository<Antropometria>) {}
 
-    async findAllByPaciente(pacienteId: string) {
+    async findAllByPaciente({page, pageSize, pacienteId}: FindAllPaginationArgs) {
         try {
-            return await this.antropometriaRepository.find({ where: { pacienteId } });
+            return await this.antropometriaRepository.find({ where: { pacienteId }, take: pageSize, skip: getOffset({page, pageSize}) });
         } catch (error) {
             this.logger.error(error.message);
             throw new InternalServerErrorException(error.message);

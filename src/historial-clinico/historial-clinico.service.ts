@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HistorialClinico } from './entities/historial-clinico.entity';
 import { CreateHistorialInput, UpdateHistorialInput } from './dto/inputs/index';
+import { PaginationArgs, getOffset } from '../common/dto/args/pagination.args';
 
 @Injectable()
 export class HistorialClinicoService {
@@ -10,9 +11,9 @@ export class HistorialClinicoService {
 
     constructor(@InjectRepository(HistorialClinico) private historialRepository: Repository<HistorialClinico>) {}
 
-    async findAll() {
+    async findAll({page, pageSize}: PaginationArgs) {
         try {
-            return await this.historialRepository.find();
+            return await this.historialRepository.find({take: pageSize, skip: getOffset({page, pageSize})});
         } catch (error) {
             this.logger.error(error.message);
             throw new InternalServerErrorException(error.message);

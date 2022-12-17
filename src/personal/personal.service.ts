@@ -6,6 +6,7 @@ import { Personal } from './entities/personal.entity';
 import { SignUpInput } from '../auth/dto/inputs/index';
 import { ValidRoles } from './enum/valid.roles';
 import { UpdateProfileInput } from '../auth/dto/inputs/update-profile.input';
+import { PaginationArgs, getOffset } from '../common/dto/args/pagination.args';
  
 @Injectable()
 export class PersonalService {
@@ -26,9 +27,9 @@ export class PersonalService {
         }
     }
 
-    async findAllRecepcionistas() {
+    async findAllRecepcionistas({page, pageSize}: PaginationArgs) {
         try {
-            return await this.personalRepository.find({ where: { rol: ValidRoles.recepcionista } });
+            return await this.personalRepository.find({ where: { rol: ValidRoles.recepcionista }, take: pageSize, skip: getOffset({page, pageSize}) });
         } catch (error) {
             this.logger.error(error.message);
             throw new InternalServerErrorException(error);

@@ -3,15 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cita } from './entities/cita.entity';
 import { CreateCitaInput, UpdateCitaInput } from './dto/inputs/index';
+import { PaginationArgs, getOffset } from '../common/dto/args/pagination.args';
+
 @Injectable()
 export class CitasService {
     private logger = new Logger("Citas Service");
 
     constructor(@InjectRepository(Cita) private readonly citaRepository: Repository<Cita>) {}
 
-    async findAll() {
+    async findAll({page, pageSize}: PaginationArgs) {
         try {
-            const citas = await this.citaRepository.find();
+            const citas = await this.citaRepository.find({take: pageSize, skip: getOffset({page, pageSize})});
             return citas;
         } catch (error) {
             this.logger.error(error.message);

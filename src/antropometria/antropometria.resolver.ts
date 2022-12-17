@@ -1,19 +1,21 @@
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AntropometriaService } from './antropometria.service';
 import { Antropometria } from './entities/antropometria.entity';
 import { CreateAntropometricoInput, UpdateAntropometricoInput } from './dto/inputs/index';
-import { ValidateRole } from 'src/auth/decorators/validate-role.decorator';
-import { Personal } from 'src/personal/entities/personal.entity';
-import { ValidRoles } from 'src/personal/enum/valid.roles';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { FindAllPaginationArgs } from '../common/dto/args/find-all-pagination.args';
+import { ValidateRole } from '../auth/decorators/validate-role.decorator';
+import { ValidRoles } from '../personal/enum/valid.roles';
+import { Personal } from '../personal/entities/personal.entity';
 
-@Resolver()
+@Resolver() @UseGuards(JwtGuard)
 export class AntropometriaResolver {
   constructor(private readonly antropometriaService: AntropometriaService) {}
 
   @Query(() => [Antropometria], { name: 'antropometricos' })
-  findAll(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args('pacienteId', { type: () => ID }, ParseUUIDPipe) pacienteId: string) {
-    return this.antropometriaService.findAllByPaciente(pacienteId);
+  findAll(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args() findAllPagination: FindAllPaginationArgs) {
+    return this.antropometriaService.findAllByPaciente(findAllPagination);
   }
 
   @Query(() => Antropometria, { name: 'antropometrico' })

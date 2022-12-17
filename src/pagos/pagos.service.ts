@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Pago } from './entities/pago.entity';
 import { Repository } from 'typeorm';
 import { CreatePagoInput } from './dto/inputs/create-pago.input';
+import { getOffset, PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Injectable()
 export class PagosService {
@@ -10,9 +11,9 @@ export class PagosService {
     
     constructor(@InjectRepository(Pago) private pagoRepository: Repository<Pago>) {}
 
-    async findAll() {
+    async findAll({page, pageSize}: PaginationArgs) {
         try {
-            const pagos = await this.pagoRepository.find();
+            const pagos = await this.pagoRepository.find({take: pageSize, skip: getOffset({page, pageSize})});
             return pagos;
         } catch (error) {
             this.logger.error(error.message);

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Paciente } from './entities/paciente.entity';
 import { CreatePacienteInput, UpdatePacienteInput } from './dto/inputs/index';
+import { PaginationArgs, getOffset } from '../common/dto/args/pagination.args';
 
 @Injectable()
 export class PacientesService {
@@ -10,9 +11,9 @@ export class PacientesService {
 
     constructor(@InjectRepository(Paciente) private pacienteRepository: Repository<Paciente>) {}
 
-    async findAll(): Promise<Paciente[]> {
+    async findAll({pageSize, page}: PaginationArgs): Promise<Paciente[]> {
         try {
-            const pacientes = await this.pacienteRepository.find();
+            const pacientes = await this.pacienteRepository.find({ take: pageSize, skip: getOffset({page, pageSize}) });
             return pacientes;
         } catch (error) {
             this.logger.error(error.message);

@@ -1,19 +1,21 @@
-import { ParseUUIDPipe } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { LaboratorialService } from './laboratorial.service';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { ValidRoles } from '../personal/enum/valid.roles';
+import { ValidateRole } from '../auth/decorators/validate-role.decorator';
+import { Personal } from '../personal/entities/personal.entity';
 import { Laboratorial } from './entities/laboratorial.entity';
+import { LaboratorialService } from './laboratorial.service';
 import { CreateLaboratorialInput, UpdateLaboratorialInput } from './dto/inputs/index';
-import { ValidateRole } from 'src/auth/decorators/validate-role.decorator';
-import { Personal } from 'src/personal/entities/personal.entity';
-import { ValidRoles } from 'src/personal/enum/valid.roles';
+import { FindAllPaginationArgs } from '../common/dto/args/find-all-pagination.args';
 
-@Resolver()
+@Resolver() @UseGuards(JwtGuard)
 export class LaboratorialResolver {
   constructor(private readonly laboratorialService: LaboratorialService) {}
 
   @Query(() => [Laboratorial], { name: 'laboratoriales' })
-  findAll(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args('pacienteId', { type: () => ID }, ParseUUIDPipe) pacienteId: string) {
-    return this.laboratorialService.findAllByPaciente(pacienteId);
+  findAll(@ValidateRole(ValidRoles.nutriologo) personal: Personal, @Args() findAllPaignation: FindAllPaginationArgs) {
+    return this.laboratorialService.findAllByPaciente(findAllPaignation);
   }
 
   @Query(() => Laboratorial, { name: 'laboratorial' })

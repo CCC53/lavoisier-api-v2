@@ -112,21 +112,22 @@ type AuthResponse {
 }
 
 type Query {
-  pacientes: [Paciente!]!
+  pacientes(pageSize: Int = 5, page: Int!): [Paciente!]!
   paciente(id: ID!): Paciente!
-  citas: [Cita!]!
+  citas(pageSize: Int = 5, page: Int!): [Cita!]!
   cita(id: ID!): Cita!
-  pagos: [Pago!]!
+  pagos(pageSize: Int = 5, page: Int!): [Pago!]!
   pago(id: ID!): Pago!
   pagoByCita(citaId: ID!): Pago!
-  antropometricos(pacienteId: ID!): [Antropometria!]!
+  antropometricos(pageSize: Int = 5, page: Int!, pacienteId: ID!): [Antropometria!]!
   antropometrico(id: ID!): Antropometria!
-  laboratoriales(pacienteId: ID!): [Laboratorial!]!
+  laboratoriales(pageSize: Int = 5, page: Int!, pacienteId: ID!): [Laboratorial!]!
   laboratorial(id: ID!): Laboratorial!
-  historialesClinicos: [HistorialClinico!]!
+  historialesClinicos(pageSize: Int = 5, page: Int!): [HistorialClinico!]!
   historialClinico(pacienteId: ID!): HistorialClinico!
-  recepcionistas: [Personal!]!
+  recepcionistas(pageSize: Int = 5, page: Int!): [Personal!]!
   personal(id: ID!): Personal!
+  profile: Personal!
 }
 
 type Mutation {
