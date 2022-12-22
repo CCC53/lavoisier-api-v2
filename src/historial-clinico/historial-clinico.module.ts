@@ -8,6 +8,7 @@ import { HistorialClinico } from './entities/historial-clinico.entity';
   imports: [
     TypeOrmModule.forFeature([HistorialClinico])
   ],
-  providers: [HistorialClinicoResolver, HistorialClinicoService]
+  providers: [HistorialClinicoResolver, HistorialClinicoService],
+  exports: [HistorialClinicoService]
 })
 export class HistorialClinicoModule {}

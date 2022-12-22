@@ -68,4 +68,17 @@ export class HistorialClinicoService {
             throw new InternalServerErrorException(error.message);
         }
     }
+
+    async uploadAlimentacion(id: string, alimentacion: string) {
+        try {
+            const historial = await this.historialRepository.preload({id, alimentacion});
+            if (!historial) {
+                throw new NotFoundException(`No hay historial con id ${id}`);
+            }
+            return await this.historialRepository.save(historial);
+        } catch (error) {
+            this.logger.error(error.message);
+            throw new InternalServerErrorException(error.message);
+        }
+    }
 }

@@ -2,6 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Personal {
+  id: ID!
+  nombre: String!
+  telefono: String!
+  email: String!
+  rol: validRoles!
+}
+
+enum validRoles {
+  recepcionista
+  nutriologo
+}
+
+type AuthResponse {
+  token: String!
+  personal: Personal!
+}
+
 type Cita {
   id: ID!
   motivo: String!
@@ -54,39 +72,6 @@ enum validGenres {
   otro
 }
 
-type Pago {
-  id: ID!
-  monto: Float!
-  metodoPago: paymentMethod!
-  tipoPago: paymentType!
-  cantidadRecibida: Float!
-  cambio: Float!
-  cita: Cita!
-}
-
-enum paymentMethod {
-  tarjeta
-  efectivo
-}
-
-enum paymentType {
-  primero
-  posterior
-}
-
-type Personal {
-  id: ID!
-  nombre: String!
-  telefono: String!
-  email: String!
-  rol: validRoles!
-}
-
-enum validRoles {
-  recepcionista
-  nutriologo
-}
-
 type HistorialClinico {
   id: ID!
   enfermedadesCardiovasculares: validResponse!
@@ -106,9 +91,24 @@ enum validResponse {
   no
 }
 
-type AuthResponse {
-  token: String!
-  personal: Personal!
+type Pago {
+  id: ID!
+  monto: Float!
+  metodoPago: paymentMethod!
+  tipoPago: paymentType!
+  cantidadRecibida: Float!
+  cambio: Float!
+  cita: Cita!
+}
+
+enum paymentMethod {
+  tarjeta
+  efectivo
+}
+
+enum paymentType {
+  primero
+  posterior
 }
 
 type Query {

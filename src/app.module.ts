@@ -4,14 +4,15 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { PacientesModule } from './pacientes/pacientes.module';
-import { CitasModule } from './citas/citas.module';
-import { PagosModule } from './pagos/pagos.module';
-import { AntropometriaModule } from './antropometria/antropometria.module';
-import { LaboratorialModule } from './laboratorial/laboratorial.module';
-import { HistorialClinicoModule } from './historial-clinico/historial-clinico.module';
 import { PersonalModule } from './personal/personal.module';
 import { AuthModule } from './auth/auth.module';
+import { PacientesModule } from './pacientes/pacientes.module';
+import { HistorialClinicoModule } from './historial-clinico/historial-clinico.module';
+import { AntropometriaModule } from './antropometria/antropometria.module';
+import { LaboratorialModule } from './laboratorial/laboratorial.module';
+import { CitasModule } from './citas/citas.module';
+import { PagosModule } from './pagos/pagos.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { AuthModule } from './auth/auth.module';
     LaboratorialModule,
     HistorialClinicoModule,
     PersonalModule,
-    AuthModule
+    AuthModule,
+    UploadModule,
   ]
 })
 export class AppModule {}
